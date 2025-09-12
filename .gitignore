@@ -211,3 +211,4 @@ logs/
 *.log
 *.egg-info/
 mlruns/
+tap30-ride-demand-mlops.txt
