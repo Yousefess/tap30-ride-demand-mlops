@@ -1,0 +1,15 @@
+artifact_uri: file:///mnt/d/Howsam/MLOPS/tap30-ride-demand-mlops/mlruns/617044150998312059/87d6445210b44bdeaac1f2c031dae302/artifacts
+end_time: 1757660201712
+entry_point_name: ''
+experiment_id: '617044150998312059'
+lifecycle_stage: active
+run_id: 87d6445210b44bdeaac1f2c031dae302
+run_name: bouncy-cod-311
+run_uuid: 87d6445210b44bdeaac1f2c031dae302
+source_name: ''
+source_type: 4
+source_version: ''
+start_time: 1757660117286
+status: 3
+tags: []
+user_id: yousefes

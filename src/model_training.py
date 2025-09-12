@@ -4,6 +4,7 @@
 from pathlib import Path
 
 import joblib
+import mlflow
 import pandas as pd
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.metrics import root_mean_squared_error
@@ -111,10 +112,39 @@ class ModelTraining:
         )
 
     def run(self):
-        logger.info("Model Training started")
-        train_data, val_data = self.load_data()
-        model = self.build_model()
-        self.train(model, train_data)
-        self.evaluate(model, val_data)
-        self.save(model)
-        logger.info("Model Training completed successfully")
+        """Run the entire model training.
+
+        Example
+        -------
+        >>> from src.model_training import ModelTraining
+        >>> config = read_config("config/config.yaml")
+        >>> model_training = ModelTraining(config)
+        >>> model_training.run()
+        """
+        mlflow.set_experiment("tap30_ride_demand_mlops")
+
+        with mlflow.start_run():
+            logger.info("Model Training started")
+            logger.info("MLflow started")
+            mlflow.set_tag("model_type", "random_forest")
+
+            train_data, val_data = self.load_data()
+            mlflow.log_artifact(self.train_path, "datasets")
+            mlflow.log_artifact(self.val_path, "datasets")
+
+            model = self.build_model()
+            self.train(model, train_data)
+            self.evaluate(model, val_data)
+
+            mlflow.log_metric("rmse", self.rmse)
+            mlflow.log_metric("oob_score", self.oob_score)
+
+            self.save(model)
+
+            mlflow.log_artifact(self.model_output_path, "models")
+
+            params = model.get_params()
+            mlflow.log_params(params)
+
+            logger.info("MLflow completed successfully")
+            logger.info("Model Training completed successfully")
